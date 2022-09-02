@@ -1,0 +1,20 @@
+version: '3'
+services:
+  node:
+    build: 
+        # docker compose コマンド実行時のディレクトリ
+        context: ./
+        # Dockerfileの場所
+        dockerfile: ./Dockerfile
+    working_dir: /home/node/app/project
+    # ホストOSとコンテナ内でソースコードを共有する
+    volumes:
+      - ./:/home/node/app
+    # コンテナ内部の3000を外部から5000でアクセスする
+    ports:
+      - '5000:3000'
+    # ホストOSからアクセスできるように
+    environment:
+      - HOST=0.0.0.0
+    # コンテナの起動を続けるオプション
+    tty: true
