@@ -1,4 +1,14 @@
-# nuxt2_ts_debian
+# project directory
+```bash
+・
+  # docker branch
+  |- Dockerfile
+  |- docker-compose.yml
+  |- project
+    |- nuxt
+      # master branch
+      |- each files
+```
 
 ## Build Setup
 
@@ -19,7 +29,7 @@ $ yarn generate
 
 For detailed explanation on how things work, check out the [documentation](https://nuxtjs.org).
 
-## Special Directories
+## Each Files Special Directories
 
 You can create the following extra directories, some of which have special behaviors. Only `pages` is required; you can delete them if you don't want to use their functionality.
 
