@@ -1,25 +1,39 @@
-<script lang="ts">
-  export default {
-    props: {
-      label: { type: String, required: true },
-      value: { type: String, required: true },
-      rules: { type: Array, required: false },
-    },
-    methods: {
-      // 入力されたら親コンポーネントに連携
-      updateId: function(event) {
-        this.$emit("input", event)
-      }
-    }
-  };
-</script>
-
 <template>
   <v-text-field
-    :label="label"
-    :value="value"
-    :rules="rules"
-    hide-details="auto"
-    @input="updateId"
+  :label="label"
+  :value="nowUserId"
+  :rules="rules"
+  hide-details="auto"
+  @input="updateId"
   ></v-text-field>
 </template>
+
+<script lang="ts">
+import {Component, Prop, PropSync, Vue} from "vue-property-decorator";
+
+@Component
+export default class textInputForm extends Vue{
+  /*---------------------------------
+  変数定義
+  ---------------------------------*/
+  // 見出し
+  @Prop({ type: String, required: true })
+  label: string
+
+  // ルール（バリデーションなど）
+  @Prop({ type: Array, required: true })
+  rules: []
+
+  // 入力値（子コンポーネントでの値変更を親へ渡す設定）
+  @PropSync('parentNowUserId', { type: String })
+  nowUserId: string
+
+  /*---------------------------------
+  関数定義
+  ---------------------------------*/
+  // 子コンポーネント内で値の変更
+  updateId(event) {
+    this.nowUserId = event
+  }
+};
+</script>
