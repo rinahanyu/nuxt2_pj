@@ -1,22 +1,34 @@
 <script lang="ts">
-import Vue, { PropType } from 'vue'
+import Vue from 'vue'
+import errorMessage from '../components/errorMessage.vue'
+import textInputForm from '../components/textInputForm.vue'
+import passwordInputForm from '../components/passwordInputForm.vue'
+import loginButton from '../components/loginButton.vue'
 
 export type User = {
   id: string,
   password: string
 }
 
+// TODO: decoratorに書き直し
 export type dataType = {
+  // 登録ユーザー
   users: User[],
+  // ログインエラー有無
   loginError: boolean,
+  // 入力値
   nowUserId: string,
-  nowUserPassword: string
-  // 追加するかも？
+  nowUserPassword: string,
+  // 入力フォーム関連
+  passwordShow: boolean,
+  idRules: [],
+  passwordRules: [],
+  errorMessage: string
 }
 
-// ID・passwordの定義（どのコンポーネントからでも呼び出せるように、後でstoreに入れる?）
+// TODO: ID・passwordの定義（どのコンポーネントからでも呼び出せるように、後でstoreに入れる?）
 export default Vue.extend({
-  data(): dataType {
+  data() {
     return {
       users: [
         {
@@ -30,55 +42,53 @@ export default Vue.extend({
       ],
       loginError: false,
       nowUserId: '',
-      nowUserPassword: ''
+      nowUserPassword: '',
+      passwordShow: false,
+      idRules: [
+        value => !!value || 'Required.',
+      ],
+      passwordRules: [
+        value => !!value || 'Required.',
+        value => (value && value.length >= 4) || 'Min 4 characters',
+      ],
+      errorMessage: 'ユーザー情報が存在しないため、ログインできませんでした。再度入力してください。'
     }
   },
   methods: {
     existCheck(): void {
       // 合致するユーザーが存在するか
-      this.loginError = this.users.some(v => v.id === this.nowUserId && v.password === this.nowUserPassword)
-      if (this.loginError) {
+      this.loginError = !this.users.some(v => v.id === this.nowUserId && v.password === this.nowUserPassword)
+      this.$store.commit('login', { id: this.nowUserId, password: this.nowUserPassword })
+      console.log(this.nowUserId, this.nowUserPassword)
+      if (!this.loginError) {
         // ログイン成功による画面遷移処理
         this.$router.push('/main')
       }
-    }
+    },
   },
 })
-
 </script>
 
 <template>
   <div class="login_container">
-    <h1>Login Page</h1>
-    <div class="login_error" v-if="!loginError">
-      ユーザー情報が存在しないため、ログインできませんでした。再度入力してください。
-      もしくは新規登録ボタンから登録をお願いいたします。
+    <h1 class="mb-5">Login Page</h1>
+    <div v-if="loginError">
+      <errorMessage :errorMessage="errorMessage"></errorMessage>
     </div>
     <div class="form_container">
-      <div class="form_frame">
-        <label for="id">ID</label>
-        <input name="id" type="text" v-model="nowUserId" class="enter_form">
-      </div>
-      <div class="form_frame">
-        <label for="password">password</label>
-        <input name="password" type="text" v-model="nowUserPassword" class="enter_form">
-      </div>
-      <div class="button">
-        <button @click="existCheck()">login</button>
-      </div>
+      <textInputForm
+        v-model="nowUserId"
+        :rules="idRules"
+        label="id"
+      ></textInputForm>
+      <passwordInputForm
+        v-model="nowUserPassword"
+        :rules="passwordRules"
+        label="password"
+      ></passwordInputForm>
+      <loginButton
+        @existCheck="existCheck()"
+      ></loginButton>
     </div>
   </div>
 </template>
-
-<style>
-  .enter_form {
-    outline: solid 1px gray;
-  }
-
-  .button {
-    background-color: rgba(215, 145, 117, 0.588);
-    border-radius: 5px;
-    color: white;
-    width: 80px;
-  }
-</style>

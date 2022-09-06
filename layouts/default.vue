@@ -1,5 +1,31 @@
 <template>
   <v-app dark>
+    <v-footer
+      color="primary lighten-1"
+      padless
+    >
+      <v-row
+        justify="center"
+        no-gutters
+      >
+        <v-btn
+          v-for="link in links"
+          :key="link.id"
+          color="white"
+          text
+          rounded
+          class="my-2"
+        >
+        <nuxt-link v-bind:to="'/' + link.path">{{ link.title }}</nuxt-link>
+        </v-btn>
+        <v-col
+          class="primary lighten-2 py-4 text-center white--text"
+          cols="12"
+        >
+          <strong>Nuxt2-TS-App</strong>
+        </v-col>
+      </v-row>
+    </v-footer>
     <!-- <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -86,6 +112,11 @@ export default {
       right: true,
       rightDrawer: false,
       title: 'Vuetify.js',
+      links: [
+        {path: 'main', title: 'Home'},
+        {path: 'login', title: 'Login'},
+        {path: 'login', title: 'Logout'},
+      ],
     }
   },
 }

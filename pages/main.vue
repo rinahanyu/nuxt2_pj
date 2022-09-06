@@ -1,5 +1,8 @@
 <template>
   <div>
-    <h1>ログイン成功しました</h1>
+    <h1>Home</h1>
+    <div>
+      <h4>ログインユーザーID: {{ $store.state.nowUserId }}</h4>
+    </div>
   </div>
 </template>
