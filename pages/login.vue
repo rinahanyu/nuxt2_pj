@@ -16,7 +16,7 @@
       label="password"
       ></passwordInputForm>
       <loginButton
-      @existCheck="existCheck()"
+      @exitCheck="userCheck()"
       ></loginButton>
     </div>
   </div>
@@ -24,15 +24,11 @@
 
 <script lang="ts">
 import {Component, Prop, Vue} from "vue-property-decorator";
+import { LoginStore } from '../store'
 import errorMessage from '../components/errorMessage.vue'
 import textInputForm from '../components/textInputForm.vue'
 import passwordInputForm from '../components/passwordInputForm.vue'
 import loginButton from '../components/loginButton.vue'
-
-type User = {
-  id: string,
-  password: string
-}
 
 @Component({
   components: { errorMessage, textInputForm, passwordInputForm, loginButton },
@@ -41,18 +37,6 @@ export default class login extends Vue{
   /*---------------------------------
   変数定義
   ---------------------------------*/
-  // 登録ユーザー
-  // TODO: ID・passwordの定義（どのコンポーネントからでも呼び出せるように、後でstoreに入れる?）
-  users: User[] = [
-    {
-      id: '1',
-      password: '1234'
-    },
-    {
-      id: '2',
-      password: '4321'
-    }
-  ]
   // ログインエラーメッセージ
   errorMessage: string = 'ユーザー情報が存在しないため、ログインできませんでした。再度入力してください。'
 
@@ -63,10 +47,10 @@ export default class login extends Vue{
   nowUserPassword: string = ''
   // 入力フォーム関連
   passwordShow: boolean = false
-  idRules: [] = [
+  idRules: any = [
     value => !!value || 'Required.',
   ]
-  passwordRules: [] = [
+  passwordRules: any = [
     value => !!value || 'Required.',
     value => (value && value.length >= 4) || 'Min 4 characters',
   ]
@@ -75,9 +59,8 @@ export default class login extends Vue{
   関数定義
   ---------------------------------*/
   // 登録ユーザーに存在するか
-  existCheck(): void {
-    this.loginError = !this.users.some(v => v.id === this.nowUserId && v.password === this.nowUserPassword)
-    this.$store.commit('login', { id: this.nowUserId, password: this.nowUserPassword })
+  userCheck(): void {
+    this.loginError = !LoginStore.userCheck({id: this.nowUserId, password: this.nowUserPassword})
     console.log(this.nowUserId, this.nowUserPassword)
     if (!this.loginError) {
       // ログイン成功による画面遷移処理

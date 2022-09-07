@@ -14,6 +14,6 @@ import {Component, Prop, Vue} from "vue-property-decorator";
 @Component
 export default class errorMessage extends Vue{
   @Prop({ type: String, required: true })
-  errorMessage: string
+  errorMessage!: string
 }
 </script>

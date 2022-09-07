@@ -1,7 +1,7 @@
 <template>
   <div class="button pt-5">
     <v-btn
-      @click="$emit('existCheck')"
+      @click="$emit('exitCheck')"
       class="ma-2"
       outlined
       color="indigo"

@@ -18,21 +18,21 @@ export default class textInputForm extends Vue{
   ---------------------------------*/
   // 見出し
   @Prop({ type: String, required: true })
-  label: string
+  label!: string
 
   // ルール（バリデーションなど）
   @Prop({ type: Array, required: true })
-  rules: []
+  rules!: []
 
   // 入力値（子コンポーネントでの値変更を親へ渡す設定）
   @PropSync('parentNowUserId', { type: String })
-  nowUserId: string
+  nowUserId!: string
 
   /*---------------------------------
   関数定義
   ---------------------------------*/
   // 子コンポーネント内で値の変更
-  updateId(event) {
+  updateId(event: string) {
     this.nowUserId = event
   }
 };
