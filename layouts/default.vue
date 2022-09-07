@@ -16,7 +16,7 @@
           rounded
           class="my-2"
         >
-        <nuxt-link v-bind:to="'/' + link.path">{{ link.title }}</nuxt-link>
+        <nuxt-link v-bind:to="'/' + link.path" style="text-decoration: none;"><span style="color: white;">{{ link.title }}</span></nuxt-link>
         </v-btn>
         <v-col
           class="primary lighten-2 py-4 text-center white--text"
@@ -113,9 +113,9 @@ export default {
       rightDrawer: false,
       title: 'Vuetify.js',
       links: [
-        {path: 'main', title: 'Home'},
         {path: 'login', title: 'Login'},
-        {path: 'login', title: 'Logout'},
+        {path: 'home', title: 'Home'},
+        {path: 'logout', title: 'Logout'},
       ],
     }
   },
